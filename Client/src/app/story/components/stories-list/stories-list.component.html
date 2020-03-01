@@ -1,0 +1,53 @@
+<div class="row mt-5">
+  <div *ngIf='stories.length < 1' class="col-sm-10 m-auto col-lg-4 col-md-6">
+      <h3>No Stories yet</h3>
+  </div>
+  <div *ngFor='let story of stories' class="col-sm-10 col-lg-4 col-md-6">
+  <div style="cursor: pointer;" (click)="basicModal.show()"  >
+    <mdb-card class="mb-4">
+      <mdb-card-body>
+        <mdb-card-title>
+          <p>{{story?.summary.length > 30? (story?.summary | slice:0:30) + '...' : story?.summary}}<span class="float-right bd-rad text-white" [ngClass]="story?.taskComplexity == 0? 'primary-color-dark': story?.taskComplexity == 1? 'default-color-dark': 'secondary-color-dark' ">{{story?.taskComplexity == 0? 'Easy': story?.taskComplexity == 1? 'Medium' : 'Difficult' }}</span></p>
+          
+        </mdb-card-title>
+        <mdb-card-text> {{story?.description.length > 30? (story?.description | slice:0:30) + '...' : story?.description}}
+        </mdb-card-text>
+        <p><mdb-icon far icon="clock"></mdb-icon> {{story?.estimatedTime}} {{story?.estimatedTime > 1? 'Hrs' : 'Hr'}}  <span class='float-right'><mdb-icon fas icon="money-check-alt"></mdb-icon> {{story?.cost}}</span></p>
+        <!--  -->
+        <button *ngIf='isAdmin() && !story.reviewedByAdmin' [routerLink]="['../review-story/' + story.storyId]"    mdbBtn color="primary" [disabled]='story.reviewedByAdmin' mdbWavesEffect>Review</button>
+        <span class="float-right bd-rad" [ngClass]='story.approved && story.reviewedByAdmin? "success-color-dark": !story.reviewedByAdmin? "info-color-dark" : "danger-color-dark"'>{{story.reviewedByAdmin && story?.approved? 'Active': !story.reviewedByAdmin? 'Waiting': "Rejected"}}</span>
+      </mdb-card-body>
+    </mdb-card>
+  </div>
+  <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">Type: {{story?.type}}</h4>
+        </div>
+        <div class="modal-body">
+          <mdb-card-title>
+            <p>Summary: {{story.summary}}<span class="float-right bd-rad text-white" [ngClass]="story?.taskComplexity == 0? 'primary-color-dark': story?.taskComplexity == 1? 'default-color-dark': 'secondary-color-dark' ">{{story?.taskComplexity == 0? 'Easy': story?.taskComplexity == 1? 'Medium' : 'Difficult' }}</span></p>
+          </mdb-card-title>
+          <mdb-card-text>Description: {{story?.description}}
+          </mdb-card-text>
+          <mdb-card-text *ngIf='story.reviewedByAdmin'>Admin Comment: {{story?.adminComment}}
+          </mdb-card-text>
+          <p><mdb-icon far icon="clock"></mdb-icon> {{story?.estimatedTime}} {{story?.estimatedTime > 1? 'Hrs' : 'Hr'}} <span class='float-right'><mdb-icon fas icon="money-check-alt"></mdb-icon> {{story?.cost}}</span></p>
+          <br>
+          <textarea *ngIf='isAdmin() && !story.reviewedByAdmin' [disabled]='story.reviewedByAdmin' rows="2" type="text" id="comment" [(ngModel)]="adminComment" class="form-control mb-4" placeholder="Reviewer's comment"></textarea>
+          <br>
+          <span class="float-right bd-rad" [ngClass]='story.approved && story.reviewedByAdmin? "success-color-dark": !story.reviewedByAdmin? "info-color-dark" : "danger-color-dark"'>{{story.reviewedByAdmin && story?.approved? 'Active': !story.reviewedByAdmin? 'Waiting': "Rejected"}}</span>
+        </div>
+        <div class="modal-footer">
+          <button *ngIf='isAdmin() && !story.reviewedByAdmin' type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)='accept(story)' mdbWavesEffect>Accept</button>
+          <button *ngIf='isAdmin() && !story.reviewedByAdmin' type="button" (click)='reject(story)' mdbBtn color="danger" class="relative waves-light" mdbWavesEffect>Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

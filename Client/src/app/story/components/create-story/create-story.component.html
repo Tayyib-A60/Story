@@ -1,0 +1,31 @@
+<div class="col col-sm-6 col-md-6" style="margin: 0 auto !important;">
+  <p class="h4 mb-4 mt-5 text-center">{{editMode? 'Review Story': 'Create Story'}}</p>
+  <br>
+  <form class="text-center border border-light p-5" [formGroup]="storyForm" (ngSubmit)='createStory()'>
+    <input type="text" id="type" formControlName="type" class="form-control mb-4" placeholder="Type">
+    <select formControlName='taskComplexity' class="browser-default custom-select mb-4">
+      <option value="" selected>Select Complexity</option>
+      <option value="Easy">Easy</option>
+      <option value="Medium">Medium</option>
+      <option value="Hard">Hard</option>
+    </select>
+    <textarea rows="4" type="text" id="summary" formControlName="summary" class="form-control mb-4" placeholder="Summary"></textarea>
+    <textarea rows="4" type="text" id="description" formControlName="description" class="form-control mb-4" placeholder="Description"></textarea>
+      <input type="number" id="estimatedTime" formControlName="estimatedTime" class="form-control mb-4" placeholder="Estimated Time in hours">
+      <input type="number" id="cost" formControlName="cost" class="form-control mb-4" placeholder="Cost">
+      <select *ngIf='!editMode' formControlName='reviewerId' class="browser-default custom-select mb-4">
+        <option value="" selected>Assign Reviewer</option>
+        <option *ngFor='let reviewer of adminUsers' [value]="reviewer.id">{{reviewer?.name}}</option>
+      </select>
+      <!-- <textarea *ngIf='editMode' rows="4" type="text" id="adminComment" formControlName="adminComment" class="form-control mb-4" placeholder="Admin comment"></textarea> -->
+      <!-- <mdb-checkbox formControlName='approve'>Approve</mdb-checkbox> -->
+      <!-- <div class="row" *ngIf='story'> -->
+        <button mdbBtn color="success" block="true" class="my-4" type="submit"
+        [disabled]="!storyForm.valid">Create Story</button>
+        <!-- <button (click)='rejectStory()' *ngIf='editMode && !story.reviewedByAdmin' mdbBtn color="danger" block="true" class="my-4" type="button" [disabled]="!storyForm.valid">Reject Story</button> -->
+      <!-- </div> -->
+    </form>
+</div>
+<br>
+<br>
+<br>

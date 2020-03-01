@@ -1,0 +1,5 @@
+.vscode
+Api/bin
+Api/obj
+
+Client/node_modules
