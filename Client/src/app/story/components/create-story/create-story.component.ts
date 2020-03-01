@@ -46,8 +46,8 @@ export class CreateStoryComponent implements OnInit {
     let description = '';
     let type = '';
     let taskComplexity = '';
-    let estimatedTime = 0;
-    let cost = 0;
+    let estimatedTime = null;
+    let cost = null;
     let reviewerId = '';
 
     this.storyForm = new FormGroup({
