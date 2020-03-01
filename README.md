@@ -1,4 +1,4 @@
-#API
+# API
 
 # System Requirements to run the app
     - dotnet core 2.1.8
@@ -21,11 +21,11 @@
     - FallBackController was added to handle routing error once the SPA is built into the webroot path of the api
 
 
-#CLIENT
+# CLIENT
 
 # Requirements
     - node (version 10.0 up)
-    
+
 # First Steps
     - run npm i from the Client directory
     - run ng serve (default port is 4200) <optionally run ng serve --port $PORT (e.g 3000)>
