@@ -15,6 +15,7 @@ using SendGrid.Helpers.Mail;
 using Api.Core;
 using Api.Extensions;
 using Api.Controllers.DTOs;
+using Newtonsoft.Json;
 
 namespace Api.Persistence {
     public class UserRepository : IUserRepository {
@@ -79,7 +80,15 @@ namespace Api.Persistence {
             var to = new EmailAddress (message.ToEmail, message.ToName);
             var htmlContent = $"<div style='background-color: #ffffff; margin: 0 auto;  color: rgb(30, 31, 30);'><div  style='background-color: #fcd2d2; padding: 12px; border-top-left-radius: 8px; border-top-right-radius: 8px;'></div><div style='background-color: #ffffff; padding: 20px; font-size: 20px'>{message.HtmlContent}</div><div style='background-color: #fcd2d2; padding: 9px; border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;'></div></div>";
             var msg = MailHelper.CreateSingleEmail (from, to, subject, null, message.HtmlContent);
-            var response = await sendGridclient.SendEmailAsync (msg);
+            try
+            {
+                var response = await sendGridclient.SendEmailAsync (msg);  
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
+            }
         }
         public string CreateToken (User user) {
             var tokenHandler = new JwtSecurityTokenHandler ();
